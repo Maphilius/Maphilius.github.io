@@ -1,97 +1,107 @@
-/*!
- * Clean Blog v1.0.0 (http://startbootstrap.com)
- * Copyright 2015 Start Bootstrap
- * Licensed under Apache 2.0 (https://github.com/IronSummitMedia/startbootstrap/blob/gh-pages/LICENSE)
- */
+(function ($) {
 
-// Tooltip Init
-$(function() {
-    $("[data-toggle='tooltip']").tooltip();
-});
+	// ------- 处理搜索侧边栏 -----------
 
+	var searchForm = $('#search-form');
+	var searchSubmit = searchForm.find('.btn-gal')
+	searchSubmit.each(function () {
+		$(this).on('click', function (event) {
+			var searchInput = $(this).prev()
+			var input = searchInput.val().trim()
+			if(input === null || input === '') {
+				event.preventDefault();
+				searchInput.focus()
+			}
+		})
+	})
+	
+	// ------- 处理搜索侧边栏结束 --------
 
-// make all images responsive
-/*
- * Unuse by Hux
- * actually only Portfolio-Pages can't use it and only post-img need it.
- * so I modify the _layout/post and CSS to make post-img responsive!
- */
-// $(function() {
-//  $("img").addClass("img-responsive");
-// });
+	var slideList = []
+	var prefix = window.slideConfig.prefix
+	var ext = '.' + window.slideConfig.ext
+	var maxCount = window.slideConfig.maxCount
+	for(var k = 0; k < 6; k++) {
+		var n = Math.floor(Math.random() * maxCount) + 1
+		while(slideList.indexOf(n) !== -1) {
+			n = Math.floor(Math.random() * maxCount) + 1
+		}
+		slideList.push(n)
+	}
 
-// responsive tables
-$(document).ready(function() {
-    $("table").wrap("<div class='table-responsive'></div>");
-    $("table").addClass("table");
-});
+	// ------- 处理背景图 --------------
 
-// responsive embed videos
-$(document).ready(function () {
-    $('iframe[src*="youtube.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
-    $('iframe[src*="youtube.com"]').addClass('embed-responsive-item');
-    $('iframe[src*="vimeo.com"]').wrap('<div class="embed-responsive embed-responsive-16by9"></div>');
-    $('iframe[src*="vimeo.com"]').addClass('embed-responsive-item');
-});
+	var cdSlideShow = $('.cb-slideshow')
+	cdSlideShow.find('span').each(function (i, span) {
+		$(this).css('backgroundImage', 'url(\'' + prefix + slideList[i] + ext + '\')')
+	})
 
-// 判断是不是博文页面
-function isPages(attr){
-    var currentBoolean = document.querySelector('.navbar.navbar-custom').getAttribute(attr);
-    if(currentBoolean === 'true'){return true;}
-    return false;
-}
-/*
-    滚动函数
-    接收三个参数,
-        1 接收一个DOM对象
-        2 给目标对象切换class
-        3 触发的高度 (可选项,如果不指定高度,会将DOM的高度作为触发高度)
-*/
-function scrollCheck(scrollTarget, toggleClass, scrollHeight){
-    document.addEventListener('scroll',function(){
-    var currentTop = window.pageYOffset;
-        currentTop > (scrollHeight||scrollTarget.clientHeight)
-        ?scrollTarget.classList.add(toggleClass)
-        :scrollTarget.classList.remove(toggleClass)
-    })
-}
+	// ------- 处理背景图结束 -----------
 
-//主页
-(function(){
-    if(!isPages('data-ispost')){
-        var navbar = document.querySelector('.navbar.navbar-custom')
-        navbar.classList.add('is-fixed');
-    }
+	var panelToggle = $('.panel-toggle')
+	var panelRemove = $('.panel-remove')
+	panelToggle.on('click', function () {
+		var that = $(this)
+		var panelGal = that.parents('.panel-gal')
+		if(that.hasClass('fa-chevron-circle-up')) {
+			that.removeClass('fa-chevron-circle-up').addClass('fa-chevron-circle-down')
+			panelGal.addClass('toggled')
+		} else {
+			that.removeClass('fa-chevron-circle-down').addClass('fa-chevron-circle-up')
+			panelGal.removeClass('toggled')
+		}
+	})
+	panelRemove.on('click', function () {
+		var that = $(this)
+		// TODO 不用jqueryUI
+		that.parents('.panel').animate({
+			opacity: 0
+		}, 1000, function () {
+			$(this).css('display', 'none')
+			// $(this).css('opacity', 1)
+		})
+	})
 
-})();
+	var tagsTab = $('#tags-tab')
+	var friendLinksTab = $('#friend-links-tab')
+	var linksTab = $('#links-tab')
 
-/*
-* 先获取H1标签
-* 然后滚动出现固定导航条后
-* 将其内容放到上面居中显示
-* */
+	friendLinksTab.tab('show')
 
-/*
-    博文页面
-*/
-(function(){
-    if (isPages('data-ispost')){
-        var navbar = document.querySelector('.navbar-custom');
-        var introHeader = document.querySelector('.intro-header').offsetHeight;
-        var introHeader = introHeader > 497 ? introHeader : 400;
-        var toc = document.querySelector('.toc-wrap');
-        var postTitle = document.querySelector('.post-title-haojen');
-        scrollCheck(toc,'toc-fixed',introHeader-60);
-        scrollCheck(navbar,'is-fixed');
-        scrollCheck(postTitle,'post-title-fixed',introHeader-60);
-    }
-})();
+	tagsTab.on('click', function (e) {
+		e.preventDefault()
+		$(this).tab('show')
+	})
 
-(function () {
-    var navTop = document.querySelector('#nav-top');
-    navTop.ondblclick = function () {
-        $('body').animate({
-            scrollTop: 0
-        }, 500)
-    }
-})();
+	friendLinksTab.on('click', function (e) {
+		e.preventDefault()
+		$(this).tab('show')
+	})
+
+	linksTab.on('click', function (e) {
+		e.preventDefault()
+		$(this).tab('show')
+	})
+
+	// ------- 处理返回顶端 -------------
+
+	var goTop = $('#gal-gotop')
+	goTop.css('bottom', '-40px')
+	goTop.css('display', 'block')
+	$(window).on('scroll', function () {
+		if($(this).scrollTop() > 200) {
+			goTop.css('bottom', '20px')
+		} else {
+			goTop.css('bottom', '-40px')
+		}
+	})
+	goTop.on('click', function () {
+		$('body,html').animate({
+			scrollTop: 0
+		}, 800)
+	})
+
+	// ------- 处理返回顶端结束 ----------
+	
+})($)
+
