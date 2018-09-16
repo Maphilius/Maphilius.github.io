@@ -413,8 +413,8 @@
                 <span>CMD命令获取电脑所有连接过的WiFi密码</span>
         </a>
         <div class="abstract-content">
-            for /f &quot;skip=9 tokens=1,2 delims=:&quot; %i in (&apos;netsh wlan show profiles&apos;) do @echo %j | findstr -i -v echo | netsh wlan show profiles %j key=clear
-
+            之前在别人的博客看到的，觉得好玩就拿过来用了
+1for /f "skip=9 tokens=1,2 delims=:" %i in ('netsh wlan show profiles') do @echo %j | findstr -i -v echo | netsh wlan show profiles %j key=clear
 注意把中文字符改成英文字符！！！
 
         </div>
@@ -477,8 +477,7 @@ Usually playing games, loving ACGN and Japan.
                 <span>intro</span>
         </a>
         <div class="abstract-content">
-            ### 欢迎欢迎！你既然看到这行字，那你成功的成为了我的部下。
-那赶快follow我的GitHub 
+            欢迎欢迎！你既然看到这行字，那你成功的成为了我的部下。那赶快follow我的GitHub 
         </div>
         <div class="abstract-post-meta">
             <!-- date  -->
@@ -725,6 +724,8 @@ More...
     
     
     
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
         Total : 7
@@ -781,12 +782,12 @@ More...
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/me/" >me</a>
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/intro/" >intro</a>
         </li>
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/intro/" >intro</a>
+            <span class="archive-post-date">04/14</span><a class="archive-post-title" href= "/2018/04/14/me/" >me</a>
         </li>
     
     
